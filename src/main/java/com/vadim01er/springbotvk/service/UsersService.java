@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class UsersService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UsersService(UserRepository userRepository) {
