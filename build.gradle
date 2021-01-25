@@ -6,7 +6,12 @@ plugins {
 
 group = 'com.vadim01er'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+jar {
+	baseName = 'heroku-gradle-spring-boot'
+}
 
 configurations {
 	compileOnly {
@@ -24,8 +29,12 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compileOnly 'org.springframework.boot:spring-boot-starter-data-jpa'
+	compileOnly 'org.springframework.boot:spring-boot-starter-data-rest'
+	compileOnly 'org.springframework.boot:spring-boot-starter-tomcat'
+	runtimeOnly 'org.postgresql:postgresql'
 }
 
-test {
-	useJUnitPlatform()
-}
+//test {
+//	useJUnitPlatform()
+//}
