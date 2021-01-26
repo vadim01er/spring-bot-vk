@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,6 +35,8 @@ public class NewslettersService {
     }
 
     public List<Newsletter> findAll(){
-        return newslettersRepository.findAll();
+        ArrayList<Newsletter> newsletters = new ArrayList<>();
+        newslettersRepository.findAll().forEach(newsletters::add);
+        return newsletters;
     }
 }

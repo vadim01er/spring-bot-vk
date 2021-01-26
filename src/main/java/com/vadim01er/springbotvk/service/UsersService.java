@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,20 +45,18 @@ public class UsersService {
         return userRepository.save(user);
     }
 
-    public boolean userIsExist(long userId) {
-        return userRepository.findAll().stream()
-                .anyMatch(user -> user.getUserId() == userId);
+    public boolean userIsExist(int userId) {
+        return userRepository.existsById(userId);
     }
 
 
     public User findUserById(int userId) {
-        Optional<User> res = userRepository.findAll().stream()
-                .filter(user -> user.getUserId() == userId)
-                .findFirst();
-        return res.orElse(null);
+        return userRepository.findById(userId).orElse(null);
     }
 
     public List<User> findAllUsersWithNewsletter() {
-        return userRepository.findAll().stream().filter(User::isNewsletter).collect(Collectors.toList());
+        ArrayList<User> users = new ArrayList<>();
+        userRepository.findAll().forEach(users::add);
+        return users.stream().filter(User::isNewsletter).collect(Collectors.toList());
     }
 }
