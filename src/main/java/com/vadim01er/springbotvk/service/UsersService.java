@@ -16,7 +16,6 @@ public class UsersService {
 
     private final UserRepository userRepository;
 
-    @Autowired
     public UsersService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

@@ -10,7 +10,6 @@ public class AdminsService {
 
     private final AdminRepository adminRepository;
 
-    @Autowired
     public AdminsService(AdminRepository adminRepository) {
         this.adminRepository = adminRepository;
     }

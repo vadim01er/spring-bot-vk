@@ -17,7 +17,6 @@ public class NewslettersService {
 
     private final static String DATA_FORMAT = "dd-MM";
 
-    @Autowired
     public NewslettersService(NewslettersRepository newslettersRepository) {
         this.newslettersRepository = newslettersRepository;
     }

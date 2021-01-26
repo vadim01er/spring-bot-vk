@@ -19,7 +19,6 @@ public class NewsletterScheduled {
     private final UsersService usersService;
     private final NewslettersService newslettersService;
 
-    @Autowired
     public NewsletterScheduled(VkClient client, UsersService usersService, NewslettersService newslettersService) {
         this.client = client;
         this.usersService = usersService;

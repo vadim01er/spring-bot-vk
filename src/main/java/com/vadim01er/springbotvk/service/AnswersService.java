@@ -9,7 +9,6 @@ public class AnswersService {
 
     private final AnswersRepository answersRepository;
 
-    @Autowired
     public AnswersService(AnswersRepository answersRepository) {
         this.answersRepository = answersRepository;
     }

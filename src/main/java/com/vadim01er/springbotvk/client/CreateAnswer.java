@@ -33,7 +33,6 @@ public class CreateAnswer {
         put("Совет дня", "начать2");
     }}; // add back!!!
 
-    @Autowired
     public CreateAnswer(VkClient client, AdminsService adminsService,
                         UsersService usersService, AnswersService answersService,
                         NewslettersService newslettersService) {

@@ -18,7 +18,6 @@ public class Controller {
     private final CreateAnswer createAnswer;
     private final AdminsService adminsService;
 
-    @Autowired
     public Controller(ClientConfig clientConfig, CreateAnswer createAnswer, AdminsService adminsService) {
         this.clientConfig = clientConfig;
         this.createAnswer = createAnswer;

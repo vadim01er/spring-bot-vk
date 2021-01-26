@@ -30,7 +30,6 @@ public class VkClient {
     private final RestTemplate template;
     private final ClientConfig clientConfig;
 
-    @Autowired
     public VkClient(RestTemplate template, ClientConfig clientConfig) {
         this.template = template;
         this.clientConfig = clientConfig;
