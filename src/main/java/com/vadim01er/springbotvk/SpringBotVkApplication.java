@@ -2,10 +2,12 @@ package com.vadim01er.springbotvk;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories("com.vadim01er.springbotvk.entities")
+@EnableJpaRepositories(basePackages = "com.vadim01er.springbotvk")
+@EntityScan("com.vadim01er.springbotvk")
 public class SpringBotVkApplication {
 
 	public static void main(String[] args) {
