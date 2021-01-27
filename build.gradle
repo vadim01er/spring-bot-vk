@@ -7,29 +7,6 @@ plugins {
 group = 'com.vadim01er'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
-
-jar {
-	manifest {
-		attributes "Main-Class": "com.vadim01er.springbotvk.SpringBotVkApplication"
-	}
-
-	from {
-//		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-	}
-}
-
-task fatJar(type: Jar) {
-	manifest {
-		attributes 'Implementation-Title': 'Gradle Jar File Example',
-				'Implementation-Version': version,
-				'Main-Class': 'com.vadim01er.springbotvk.SpringBotVkApplication'
-	}
-	baseName = project.name + '-all'
-	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-	with jar
-}
 
 configurations {
 	compileOnly {
@@ -42,16 +19,13 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	compileOnly 'org.springframework.boot:spring-boot-starter-data-jpa'
-	compileOnly 'org.springframework.boot:spring-boot-starter-data-rest'
-	compileOnly 'org.springframework.boot:spring-boot-starter-tomcat'
-	compileOnly 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-	runtimeOnly 'org.postgresql:postgresql'
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+	annotationProcessor 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok'
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.4.1'
 	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
 }

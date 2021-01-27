@@ -3,7 +3,6 @@ package com.vadim01er.springbotvk.service;
 import com.vadim01er.springbotvk.entities.User;
 import com.vadim01er.springbotvk.entities.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class UsersService {
     public User update(int userId, User newUser) {
         User user = findUserById(userId);
         if (user == null) {
-            throw new ResourceNotFoundException("User not found with id " + userId);
+            throw new IllegalArgumentException("User not found with id " + userId);
         }
         user.setUserId(newUser.getUserId());
         user.setNow(newUser.getNow());
@@ -38,7 +37,7 @@ public class UsersService {
     public User updateNow(int userId, String newNow) {
         User user = findUserById(userId);
         if (user == null) {
-            throw new ResourceNotFoundException("User not found with id " + userId);
+            throw new IllegalArgumentException("User not found with id " + userId);
         }
         user.setNow(newNow);
         return userRepository.save(user);
