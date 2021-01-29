@@ -24,8 +24,8 @@ public class NewsletterScheduled {
         this.newslettersService = newslettersService;
     }
 
-//    @Scheduled(cron="0 0 12 * * *")
-    @Scheduled(cron="0/10 * * * * *")
+    @Scheduled(cron="0 0 12 * * *")
+//    @Scheduled(cron="0/10 * * * * *")
     public void notifyNewsletter() {
         long l = System.currentTimeMillis();
         String currentTime = new SimpleDateFormat("dd-MM").format(l);
