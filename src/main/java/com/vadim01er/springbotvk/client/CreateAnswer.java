@@ -167,6 +167,14 @@ public class CreateAnswer {
                 answer = answersService.findAnswer("Тайм-менеджмент2");
                 client.sendMessage(answer, peerId);
                 answer = answersService.findAnswer("Тайм-менеджмент3");
+                client.sendMessage(answer, peerId);
+                answer = answersService.findAnswer("Тайм-менеджмент4");
+                client.sendMessage(answer, peerId);
+                answer = answersService.findAnswer("Тайм-менеджмент5");
+                client.sendMessage(answer, peerId);
+                answer = answersService.findAnswer("Тайм-менеджмент6");
+                client.sendMessage(answer, peerId);
+                answer = answersService.findAnswer("Тайм-менеджмент7");
                 client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
                 break;
             case "Сроки курса":
