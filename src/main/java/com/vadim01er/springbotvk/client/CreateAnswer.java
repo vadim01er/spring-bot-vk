@@ -166,7 +166,7 @@ public class CreateAnswer {
                 answer = answersService.findAnswer("Методическое пособие для студентов");
                 client.sendMessage(answer, peerId, new Keyboard().addButtons(
                         new String[]{"Методическое пособие"},
-//                        new String[]{"linkМетодическое пособие"},
+                        new String[]{"linkМетодическое пособие"},
                         true));
                 break;
             // END Методическое пособие для студентов

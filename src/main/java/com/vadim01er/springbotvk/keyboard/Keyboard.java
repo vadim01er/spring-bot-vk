@@ -3,7 +3,6 @@ package com.vadim01er.springbotvk.keyboard;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,18 +10,26 @@ public class Keyboard {
     @JsonProperty("one_time")
     private boolean oneTime = false;
     @JsonProperty("buttons")
-    private List<List<Button>> buttons;
+    private List<List<ButtonLink>> buttons;
 
     @JsonAutoDetect
-    public class Button {
-        @JsonProperty("action")
-        private Action action;
+    public class Button extends ButtonLink {
         @JsonProperty("color")
         private String color;
 
         public Button(Action action, String color) {
-            this.action = action;
+            super(action);
             this.color = color;
+        }
+    }
+
+    @JsonAutoDetect
+    public class ButtonLink {
+        @JsonProperty("action")
+        private Action action;
+
+        public ButtonLink(Action action) {
+            this.action = action;
         }
     }
 
@@ -58,7 +65,7 @@ public class Keyboard {
 
     public Keyboard addButtons(String[] names, boolean haveBack) {
         for (String name : names) {
-            ArrayList<Button> list = new ArrayList<>();
+            ArrayList<ButtonLink> list = new ArrayList<>();
             list.add(new Button(new Action("text", name), "positive"));
             buttons.add(list);
         }
@@ -70,8 +77,8 @@ public class Keyboard {
 
     public Keyboard addButtons(String[] names, String[] links, boolean haveBack) {
         for (int i = 0; i < links.length; i++) {
-            ArrayList<Button> list = new ArrayList<>();
-            list.add(new Button(new ActionLink("open_link", names[i], links[i]), "positive"));
+            ArrayList<ButtonLink> list = new ArrayList<>();
+            list.add(new ButtonLink(new ActionLink("open_link", names[i], links[i])));
             buttons.add(list);
         }
         return this;
@@ -79,7 +86,7 @@ public class Keyboard {
 
     public Keyboard addButtonsInLine(String[][] names, boolean haveBack) {
         for (String[] name : names) {
-            ArrayList<Button> list = new ArrayList<>();
+            ArrayList<ButtonLink> list = new ArrayList<>();
             for (String s : name) {
                 list.add(new Button(new Action("text", s), "positive"));
             }
