@@ -145,6 +145,8 @@ public class CreateAnswer {
                 answer = answersService.findAnswer("Что такое ОПД?");
                 client.sendMessage(answer, peerId);
                 answer = answersService.findAnswer("Что такое ОПД?2");
+                client.sendMessage(answer, peerId);
+                answer = answersService.findAnswer("Что такое ОПД?3");
                 client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
                 break;
             case "Польза проектной деятельности":
