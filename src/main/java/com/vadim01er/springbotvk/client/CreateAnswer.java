@@ -38,6 +38,8 @@ public class CreateAnswer {
         put("Местоположение", "Контакты руководителей курса");
         put("Task list", "начать2");
         put("Совет дня", "начать2");
+        put("Да", "начать2");
+        put("Нет", "начать2");
     }};
 
     public CreateAnswer(VkClient client, AdminsService adminsService,
@@ -212,15 +214,19 @@ public class CreateAnswer {
                 break;
             case "Да":
                 usersService.updateNewsletter(peerId, true);
-                answer = answersService.findAnswer("Task list");
-                client.sendMessageWithDocAndKeyboard(answer, peerId, 147195096, 587606434,
-                        new Keyboard().addButtons(new String[]{"Подписаться на рассылку"}, true));
+                answer = answersService.findAnswer("начать2");
+                client.sendMessage(answer, peerId, new Keyboard().addButtons(
+                        new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
+                                "Контакты руководителей курса", "Task list"/*, "Совет дня"*/},
+                        false));
                 break;
             case "Нет":
                 usersService.updateNewsletter(peerId, false);
-                answer = answersService.findAnswer("Task list");
-                client.sendMessageWithDocAndKeyboard(answer, peerId, 147195096, 587606434,
-                        new Keyboard().addButtons(new String[]{"Подписаться на рассылку"}, true));
+                answer = answersService.findAnswer("начать2");
+                client.sendMessage(answer, peerId, new Keyboard().addButtons(
+                        new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
+                                "Контакты руководителей курса", "Task list"/*, "Совет дня"*/},
+                        false));
                 break;
             // END Task list
             default:
