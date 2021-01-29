@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import java.text.SimpleDateFormat;
 
 @Component
-@EnableScheduling
 public class NewsletterScheduled {
 
     private final VkClient client;
