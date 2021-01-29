@@ -8,7 +8,6 @@ import com.vadim01er.springbotvk.client.answers.VkResponse;
 import com.vadim01er.springbotvk.keyboard.Keyboard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -50,7 +49,7 @@ public class VkClient {
     public ResponseEntity<MessageResponse> sendMessage(String message, int peerId) {
         final String request = getUrlRequest(
                 "messages.send",
-                new HashMap<String, Object>() {{
+                new HashMap<>() {{
                     put("message", message);
                     put("peer_id", peerId);
                     put("random_id", System.currentTimeMillis());
@@ -79,7 +78,7 @@ public class VkClient {
 
             final String request = getUrlRequest(
                     "messages.send",
-                    new HashMap<String, Object>() {{
+                    new HashMap<>() {{
                         put("message", message);
                         put("peer_id", peerId);
                         put("random_id", System.currentTimeMillis());
@@ -98,12 +97,64 @@ public class VkClient {
 
         final String url = getUrlRequest(
                 "messages.send",
-                new HashMap<String, Object>() {{
+                new HashMap<>() {{
                     put("message", message);
                     put("peer_id", peerId);
                     put("random_id", System.currentTimeMillis());
                     put("access_token", clientConfig.getToken());
                     put("v", clientConfig.getVersionAPI());
+                }}
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        map.add("keyboard", objectMapper.writeValueAsString(keyboard));
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+        logger.info("trying POST request " + url + " with keyboard: " + request);
+        ResponseEntity<String> response = template.postForEntity(url, request, String.class);
+        return response;
+    }
+
+    public ResponseEntity<MessageResponse> sendMessageWithDoc(String message, int peerId, int owner_id, int media_id) {
+        final ResponseEntity<MessageResponse> response;
+
+        StringBuilder attachments = new StringBuilder();
+        attachments.append("doc").append(owner_id)
+                .append("_").append(media_id);
+
+        final String request = getUrlRequest(
+                "messages.send",
+                new HashMap<>() {{
+                    put("message", message);
+                    put("peer_id", peerId);
+                    put("random_id", System.currentTimeMillis());
+                    put("access_token", clientConfig.getToken());
+                    put("v", clientConfig.getVersionAPI());
+                    put("attachment", attachments);
+                }}
+        );
+        logger.info("trying GET request with attachment: " + request);
+        response = template.getForEntity(request, MessageResponse.class);
+        return response;
+    }
+
+    public ResponseEntity<String> sendMessageWithDocAndKeyboard(String message, int peerId, int owner_id,
+                                                                int media_id, Keyboard keyboard) throws JsonProcessingException {
+        StringBuilder attachments = new StringBuilder();
+        attachments.append("doc").append(owner_id)
+                .append("_").append(media_id);
+
+        final String url = getUrlRequest(
+                "messages.send",
+                new HashMap<>() {{
+                    put("message", message);
+                    put("peer_id", peerId);
+                    put("random_id", System.currentTimeMillis());
+                    put("access_token", clientConfig.getToken());
+                    put("v", clientConfig.getVersionAPI());
+                    put("attachment", attachments);
                 }}
         );
 

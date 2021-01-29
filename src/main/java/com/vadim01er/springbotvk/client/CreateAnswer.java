@@ -1,6 +1,7 @@
 package com.vadim01er.springbotvk.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.vadim01er.springbotvk.client.answers.Message;
 import com.vadim01er.springbotvk.client.answers.VkResponse;
 import com.vadim01er.springbotvk.entities.Admin;
 import com.vadim01er.springbotvk.entities.User;
@@ -140,6 +141,8 @@ public class CreateAnswer {
                 break;
             case "Что такое ОПД?":
                 answer = answersService.findAnswer("Что такое ОПД?");
+                client.sendMessage(answer, peerId);
+                answer = answersService.findAnswer("Что такое ОПД?2");
                 client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
                 break;
             case "Польза проектной деятельности":
@@ -148,10 +151,22 @@ public class CreateAnswer {
                 break;
             case "Командообразование + тест":
                 answer = answersService.findAnswer("Командообразование + тест");
+                client.sendMessage(answer, peerId);
+                answer = answersService.findAnswer("Командообразование + тест2");
+                client.sendMessage(answer, peerId);
+                answer = answersService.findAnswer("Командообразование + тест3");
+                client.sendMessage(answer, peerId);
+                answer = answersService.findAnswer("Командообразование + тест4");
                 client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
                 break;
             case "Тайм-менеджмент":
                 answer = answersService.findAnswer("Тайм-менеджмент");
+                client.sendMessage(answer, peerId);
+                answer = answersService.findAnswer("Тайм-менеджмент2");
+                client.sendMessage(answer, peerId);
+                answer = answersService.findAnswer("Тайм-менеджмент3");
+                client.sendMessage(answer, peerId);
+                answer = answersService.findAnswer("Тайм-менеджмент4");
                 client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
                 break;
             case "Сроки курса":
@@ -164,13 +179,9 @@ public class CreateAnswer {
             //Методическое пособие для студентов
             case "Методическое пособие для студентов":
                 answer = answersService.findAnswer("Методическое пособие для студентов");
-                client.sendMessage(answer, peerId, new Keyboard().addButtons(
-                        new String[]{"Методическое пособие"},
-                        new String[]{"linkМетодическое пособие"},
-                        true));
+                client.sendMessageWithDoc(answer, peerId,147195096,587609010);
                 break;
             // END Методическое пособие для студентов
-
 
             case "Контакты руководителей курса":
                 answer = answersService.findAnswer("Контакты руководителей курса");
@@ -188,14 +199,11 @@ public class CreateAnswer {
                 client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
                 break;
 
-
             // Task list
             case "Task list":
                 answer = answersService.findAnswer("Task list");
-                client.sendMessage(answer, peerId, new Keyboard()
-                        .addButtons(new String[]{"Что такое task list?", "Ссылка на task list"},
-                                new String[]{"--", "++"}, false)
-                        .addButtons(new String[]{"Подписаться на рассылку"}, true));
+                client.sendMessageWithDocAndKeyboard(answer, peerId, 147195096, 587606434,
+                        new Keyboard().addButtons(new String[]{"Подписаться на рассылку"}, true));
                 break;
             case "Подписаться на рассылку":
                 answer = answersService.findAnswer("Подписаться на рассылку");
@@ -205,20 +213,14 @@ public class CreateAnswer {
             case "Да":
                 usersService.updateNewsletter(peerId, true);
                 answer = answersService.findAnswer("Task list");
-                client.sendMessage(answer, peerId, new Keyboard()
-                        .addButtons(new String[]{"Что такое task list?", "Ссылка на task list"},
-                                new String[]{"--", "++"}, false)
-                        .addButtons(new String[]{"Подписаться на рассылку"}, true));
-                textMsg = "Task list";
+                client.sendMessageWithDocAndKeyboard(answer, peerId, 147195096, 587606434,
+                        new Keyboard().addButtons(new String[]{"Подписаться на рассылку"}, true));
                 break;
             case "Нет":
                 usersService.updateNewsletter(peerId, false);
                 answer = answersService.findAnswer("Task list");
-                client.sendMessage(answer, peerId, new Keyboard()
-                        .addButtons(new String[]{"Что такое task list?", "Ссылка на task list"},
-                                new String[]{"--", "++"}, false)
-                        .addButtons(new String[]{"Подписаться на рассылку"}, true));
-                textMsg = "Task list";
+                client.sendMessageWithDocAndKeyboard(answer, peerId, 147195096, 587606434,
+                        new Keyboard().addButtons(new String[]{"Подписаться на рассылку"}, true));
                 break;
             // END Task list
             default:

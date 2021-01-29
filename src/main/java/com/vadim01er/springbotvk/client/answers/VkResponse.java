@@ -12,7 +12,7 @@ public class VkResponse {
     private VkObject vkObject;
 
     @Data
-    public class VkObject {
+    public static class VkObject {
         private Message message;
         @JsonProperty("client_info")
         private ClientInfo clientInfo;
