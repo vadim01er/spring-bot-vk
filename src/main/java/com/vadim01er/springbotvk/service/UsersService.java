@@ -46,7 +46,7 @@ public class UsersService {
         if (user == null) {
             throw new IllegalArgumentException("User not found with id " + userId);
         }
-        user.setNewsletter(user.isNewsletter());
+        user.setNewsletter(newNewsletter);
         return userRepository.save(user);
     }
 
