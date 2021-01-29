@@ -34,12 +34,21 @@ public class UsersService {
         return userRepository.save(user);
     }
 
-    public User updateNow(int userId, String newNow) {
+    public User updateNowTxt(int userId, String newNow) {
         User user = findUserById(userId);
         if (user == null) {
             throw new IllegalArgumentException("User not found with id " + userId);
         }
         user.setNow(newNow);
+        return userRepository.save(user);
+    }
+
+    public User updateNewsletter(int userId, boolean newNewsletter) {
+        User user = findUserById(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found with id " + userId);
+        }
+        user.setNewsletter(user.isNewsletter());
         return userRepository.save(user);
     }
 

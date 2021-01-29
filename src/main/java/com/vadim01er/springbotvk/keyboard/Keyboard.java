@@ -92,8 +92,9 @@ public class Keyboard {
         return this;
     }
 
-    private void addButtonBack() {
-        buttons.add(new ArrayList<Button>() {{add(new Button(new Action("text", "Назад"), "negative"));}});
+    public Keyboard addButtonBack() {
+        buttons.add(new ArrayList<>() {{add(new Button(new Action("text", "Назад"), "negative"));}});
+        return this;
     }
 
 }

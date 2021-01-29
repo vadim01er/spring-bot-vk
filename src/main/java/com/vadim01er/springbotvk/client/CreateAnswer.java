@@ -9,7 +9,6 @@ import com.vadim01er.springbotvk.service.AdminsService;
 import com.vadim01er.springbotvk.service.AnswersService;
 import com.vadim01er.springbotvk.service.NewslettersService;
 import com.vadim01er.springbotvk.service.UsersService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -25,13 +24,20 @@ public class CreateAnswer {
     private final AnswersService answersService;
     private final NewslettersService newslettersService;
 
-    private final Map<String, String> mapBack = new HashMap<String, String>() {{
+    private final Map<String, String> mapBack = new HashMap<>() {{
         put("Основная информация о курсе ОПД", "начать2");
+        put("Что такое ОПД?", "Основная информация о курсе ОПД");
+        put("Польза проектной деятельности", "Основная информация о курсе ОПД");
+        put("Командообразование + тест", "Основная информация о курсе ОПД");
+        put("Тайм-менеджмент", "Основная информация о курсе ОПД");
+        put("Сроки курса", "Основная информация о курсе ОПД");
         put("Методическое пособие для студентов", "начать2");
         put("Контакты руководителей курса", "начать2");
+        put("Контактные данные", "Контакты руководителей курса");
+        put("Местоположение", "Контакты руководителей курса");
         put("Task list", "начать2");
         put("Совет дня", "начать2");
-    }}; // add back!!!
+    }};
 
     public CreateAnswer(VkClient client, AdminsService adminsService,
                         UsersService usersService, AnswersService answersService,
@@ -91,8 +97,11 @@ public class CreateAnswer {
         String textMsg = msg.getVkObject().getMessage().getText();
         int peerId = msg.getVkObject().getMessage().getPeerId();
         boolean haveUser = usersService.userIsExist(peerId);
+        String answer;
 
-        if (msg.getVkObject().getMessage().getPayload().isEmpty() && !isAdmin) {
+        if (!isAdmin
+                && !msg.getVkObject().getMessage().getText().equals("Начать")
+                && msg.getVkObject().getMessage().getPayload().isEmpty()) {
             client.sendMessage("Пожалуйста, используйте кнопки", peerId);
             return;
         }
@@ -106,15 +115,12 @@ public class CreateAnswer {
                 || textMsg.equals("Start") || textMsg.equals("start")) {
 
             usersService.insert(new User(peerId, "начать2", true));
-            String answer = answersService.findAnswer("Начать");
-            client.sendMessage(answer, peerId,
-                    new Keyboard().addButtons(new String[]{"Основная информация о курсе ОПД",
-                            "Методическое пособие для студентов", "Контакты руководителей курса",
-                            "Task list", "Совет дня"}, false));
+            answer = answersService.findAnswer("Начать");
+            client.sendMessage(answer, peerId, new Keyboard().addButtons(new String[]{"Основная информация о курсе ОПД",
+                    "Методическое пособие для студентов", "Контакты руководителей курса",
+                    "Task list", "Совет дня"}, false));
             return;
         }
-
-        String answer;
 
         switch (textMsg) {
             case "начать2":
@@ -122,41 +128,101 @@ public class CreateAnswer {
                 client.sendMessage(answer, peerId, new Keyboard().addButtons(
                         new String[]{"Основная информация о курсе ОПД",
                                 "Методическое пособие для студентов", "Контакты руководителей курса",
-                                "Task list", "Совет дня"}, false));
+                                "Task list"/*, "Совет дня"*/}, false));
                 break;
-
-            //Основная информация о курсе ОПД
+            // Основная информация о курсе ОПД
             case "Основная информация о курсе ОПД":
                 answer = answersService.findAnswer("Основная информация о курсе ОПД");
                 client.sendMessage(answer, peerId, new Keyboard().addButtons(
-                        new String[]{"Основная информация о курсе ОПД",
-                                "Методическое пособие для студентов", "Контакты руководителей курса",
-                                "Task list", "Совет дня"}, false));
+                        new String[]{"Что такое ОПД?", "Польза проектной деятельности", "Командообразование + тест",
+                                "Тайм-менеджмент", "Сроки курса"}, false));
                 break;
             case "Что такое ОПД?":
-
+                answer = answersService.findAnswer("Что такое ОПД?");
+                client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
+                break;
+            case "Польза проектной деятельности":
+                answer = answersService.findAnswer("Польза проектной деятельности");
+                client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
+                break;
+            case "Командообразование + тест":
+                answer = answersService.findAnswer("Командообразование + тест");
+                client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
+                break;
+            case "Тайм-менеджмент":
+                answer = answersService.findAnswer("Тайм-менеджмент");
+                client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
+                break;
+            case "Сроки курса":
+                answer = answersService.findAnswer("Сроки курса");
+                client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
                 break;
 
+            // END Основная информация о курсе ОПД
+
+            //Методическое пособие для студентов
             case "Методическое пособие для студентов":
-
+                answer = answersService.findAnswer("Методическое пособие для студентов");
+                client.sendMessage(answer, peerId, new Keyboard().addButtons(
+                        new String[]{"Методическое пособие"},
+                        new String[]{"linkМетодическое пособие"},
+                        true));
                 break;
+            // END Методическое пособие для студентов
+
+
             case "Контакты руководителей курса":
-
+                answer = answersService.findAnswer("Контакты руководителей курса");
+                client.sendMessage(answer, peerId, new Keyboard().addButtons(
+                        new String[]{"Курс на DL"}, new String[]{"https://dl.spbstu.ru/course/view.php?id=2660"},
+                        false).addButtons(new String[]{"Контактные данные", "Местоположение"}, true));
                 break;
+            case "Контактные данные":
+                answer = answersService.findAnswer("Контактные данные");
+                client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
+                break;
+            case "Местоположение":
+                answer = answersService.findAnswer("Местоположение");
+                client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
+                break;
+
+
+            // Task list
             case "Task list":
-
+                answer = answersService.findAnswer("Task list");
+                client.sendMessage(answer, peerId, new Keyboard()
+                        .addButtons(new String[]{"Что такое task list?", "Ссылка на task list"},
+                                new String[]{"--", "++"}, false)
+                        .addButtons(new String[]{"Подписаться на рассылку"}, true));
                 break;
-            case "Совет дня":
-
+            case "Подписаться на рассылку":
+                answer = answersService.findAnswer("Подписаться на рассылку");
+                client.sendMessage(answer, peerId,
+                        new Keyboard().addButtonsInLine(new String[][]{new String[]{"Да", "Нет"}}, false));
                 break;
-            case "":
-
+            case "Да":
+                usersService.updateNewsletter(peerId, true);
+                answer = answersService.findAnswer("Task list");
+                client.sendMessage(answer, peerId, new Keyboard()
+                        .addButtons(new String[]{"Что такое task list?", "Ссылка на task list"},
+                                new String[]{"--", "++"}, false)
+                        .addButtons(new String[]{"Подписаться на рассылку"}, true));
+                textMsg = "Task list";
                 break;
-
-
+            case "Нет":
+                usersService.updateNewsletter(peerId, false);
+                answer = answersService.findAnswer("Task list");
+                client.sendMessage(answer, peerId, new Keyboard()
+                        .addButtons(new String[]{"Что такое task list?", "Ссылка на task list"},
+                                new String[]{"--", "++"}, false)
+                        .addButtons(new String[]{"Подписаться на рассылку"}, true));
+                textMsg = "Task list";
+                break;
+            // END Task list
             default:
                 client.sendMessage("Возможно какие то неполадки", peerId);
-                break;
+                return;
         }
+        usersService.updateNowTxt(peerId, textMsg);
     }
 }
