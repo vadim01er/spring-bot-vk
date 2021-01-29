@@ -74,7 +74,7 @@ public class Keyboard {
             list.add(new Button(new ActionLink("open_link", names[i], links[i]), "positive"));
             buttons.add(list);
         }
-        System.arraycopy(names, links.length, names, 0, names.length - links.length);
+        System.arraycopy(names, 0, names, 0, names.length - links.length);
         return addButtons(names, haveBack);
     }
 

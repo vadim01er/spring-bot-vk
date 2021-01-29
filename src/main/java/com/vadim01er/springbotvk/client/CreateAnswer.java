@@ -116,9 +116,10 @@ public class CreateAnswer {
 
             usersService.insert(new User(peerId, "начать2", true));
             answer = answersService.findAnswer("Начать");
-            client.sendMessage(answer, peerId, new Keyboard().addButtons(new String[]{"Основная информация о курсе ОПД",
-                    "Методическое пособие для студентов", "Контакты руководителей курса",
-                    "Task list", "Совет дня"}, false));
+            client.sendMessage(answer, peerId, new Keyboard().addButtons(
+                    new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
+                            "Контакты руководителей курса", "Task list"/*, "Совет дня"*/},
+                    false));
             return;
         }
 
@@ -126,9 +127,9 @@ public class CreateAnswer {
             case "начать2":
                 answer = answersService.findAnswer("начать2");
                 client.sendMessage(answer, peerId, new Keyboard().addButtons(
-                        new String[]{"Основная информация о курсе ОПД",
-                                "Методическое пособие для студентов", "Контакты руководителей курса",
-                                "Task list"/*, "Совет дня"*/}, false));
+                        new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
+                                "Контакты руководителей курса", "Task list"/*, "Совет дня"*/},
+                        false));
                 break;
             // Основная информация о курсе ОПД
             case "Основная информация о курсе ОПД":
@@ -165,7 +166,7 @@ public class CreateAnswer {
                 answer = answersService.findAnswer("Методическое пособие для студентов");
                 client.sendMessage(answer, peerId, new Keyboard().addButtons(
                         new String[]{"Методическое пособие"},
-                        new String[]{"linkМетодическое пособие"},
+//                        new String[]{"linkМетодическое пособие"},
                         true));
                 break;
             // END Методическое пособие для студентов
