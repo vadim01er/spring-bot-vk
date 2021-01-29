@@ -104,7 +104,7 @@ public class CreateAnswer {
 
         if (!isAdmin
                 && !msg.getVkObject().getMessage().getText().equals("Начать")
-                && msg.getVkObject().getMessage().getPayload().isEmpty()) {
+                && msg.getVkObject().getMessage().getPayload() == null) {
             client.sendMessage("Пожалуйста, используйте кнопки", peerId);
             return;
         }
