@@ -159,8 +159,6 @@ public class CreateAnswer {
                 answer = answersService.findAnswer("Командообразование + тест2");
                 client.sendMessage(answer, peerId);
                 answer = answersService.findAnswer("Командообразование + тест3");
-                client.sendMessage(answer, peerId);
-                answer = answersService.findAnswer("Командообразование + тест4");
                 client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
                 break;
             case "Тайм-менеджмент":
@@ -169,8 +167,6 @@ public class CreateAnswer {
                 answer = answersService.findAnswer("Тайм-менеджмент2");
                 client.sendMessage(answer, peerId);
                 answer = answersService.findAnswer("Тайм-менеджмент3");
-                client.sendMessage(answer, peerId);
-                answer = answersService.findAnswer("Тайм-менеджмент4");
                 client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
                 break;
             case "Сроки курса":
