@@ -99,7 +99,8 @@ public class CreateAnswer {
     private void replay(VkResponse msg, boolean isAdmin) throws JsonProcessingException {
         String textMsg = msg.getVkObject().getMessage().getText();
         int peerId = msg.getVkObject().getMessage().getPeerId();
-        boolean haveUser = usersService.userIsExist(peerId);
+        User user = usersService.findUserById(peerId);
+        boolean haveUser = user != null;
         String answer;
 
         if (!isAdmin
@@ -210,29 +211,21 @@ public class CreateAnswer {
             // Task list
             case "Task list":
                 answer = answersService.findAnswer("Task list");
+                String nameNewsletter = user.isNewsletter()? "Отписаться от рассылки": "Подписаться на рассылку";
                 client.sendMessageWithDocAndKeyboard(answer, peerId, 147195096, 587606434,
-                        new Keyboard().addButtons(new String[]{"Подписаться на рассылку"}, true));
+                        new Keyboard().addButtons(new String[]{nameNewsletter}, true));
                 break;
             case "Подписаться на рассылку":
-                answer = answersService.findAnswer("Подписаться на рассылку");
-                client.sendMessage(answer, peerId,
-                        new Keyboard().addButtonsInLine(new String[][]{new String[]{"Да", "Нет"}}, false));
-                break;
-            case "Да":
                 usersService.updateNewsletter(peerId, true);
-                answer = answersService.findAnswer("начать2");
-                client.sendMessage(answer, peerId, new Keyboard().addButtons(
-                        new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
-                                "Контакты руководителей курса", "Task list"/*, "Совет дня"*/},
-                        false));
+                answer = "Вы подписались на рассылку";
+                client.sendMessage(answer, peerId,
+                        new Keyboard().addButtons(new String[]{"Отписаться от рассылки"}, true));
                 break;
-            case "Нет":
+            case "Отписаться от рассылки":
                 usersService.updateNewsletter(peerId, false);
-                answer = answersService.findAnswer("начать2");
-                client.sendMessage(answer, peerId, new Keyboard().addButtons(
-                        new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
-                                "Контакты руководителей курса", "Task list"/*, "Совет дня"*/},
-                        false));
+                answer = "Вы отписались от рассылки";
+                client.sendMessage(answer, peerId,
+                        new Keyboard().addButtons(new String[]{"Подписаться на рассылку"}, true));
                 break;
             // END Task list
             default:
