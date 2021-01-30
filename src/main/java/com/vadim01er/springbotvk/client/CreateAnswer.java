@@ -38,8 +38,8 @@ public class CreateAnswer {
         put("Местоположение", "Контакты руководителей курса");
         put("Task list", "начать2");
         put("Совет дня", "начать2");
-        put("Да", "начать2");
-        put("Нет", "начать2");
+        put("Отписаться от рассылки", "Task list");
+        put("Подписаться на рассылку", "Task list");
     }};
 
     public CreateAnswer(VkClient client, AdminsService adminsService,
