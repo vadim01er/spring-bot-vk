@@ -38,4 +38,9 @@ public class Controller {
 
         return HttpStatus.OK.getReasonPhrase();
     }
+
+    @PostMapping("/ping")
+    public String ping() {
+        return "pong";
+    }
 }
