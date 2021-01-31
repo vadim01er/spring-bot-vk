@@ -1,6 +1,5 @@
 package com.vadim01er.springbotvk.client;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vadim01er.springbotvk.client.answers.Message;
@@ -47,7 +46,7 @@ public class VkClient {
     }
 
     public ResponseEntity<MessageResponse> sendMessage(String message, int peerId) {
-        final String request = getUrlRequest(
+        final String url = getUrlRequest(
                 "messages.send",
                 new HashMap<>() {{
                     put("message", message);
@@ -56,10 +55,9 @@ public class VkClient {
                     put("access_token", clientConfig.getToken());
                     put("v", clientConfig.getVersionAPI());
                 }}
-
         );
-        logger.info("trying GET request: " + request);
-        final ResponseEntity<MessageResponse> response = template.getForEntity(request, MessageResponse.class);
+        logger.info("trying GET request: " + url);
+        final ResponseEntity<MessageResponse> response = template.getForEntity(url, MessageResponse.class);
         return response;
     }
 
@@ -75,7 +73,6 @@ public class VkClient {
                         .append(attachment.getPhoto().getAccessKey()).append(",");
             }
             attachments.deleteCharAt(attachments.length() - 1);
-
             final String request = getUrlRequest(
                     "messages.send",
                     new HashMap<>() {{
@@ -93,8 +90,15 @@ public class VkClient {
         return response;
     }
 
-    public ResponseEntity<String> sendMessage(String message, int peerId, Keyboard keyboard) throws JsonProcessingException {
+    public ResponseEntity<MessageResponse> sendMessageWithDoc(String message, int peerId, int ownerId, int mediaId) {
+        String url = createUrlRequest(message, peerId, ownerId, mediaId);
+        logger.info("trying GET request with attachment: " + url);
+        final ResponseEntity<MessageResponse> response = template.getForEntity(url, MessageResponse.class);
+        return response;
+    }
 
+    public ResponseEntity<String> sendMessage(String message, int peerId, Keyboard keyboard)
+            throws JsonProcessingException {
         final String url = getUrlRequest(
                 "messages.send",
                 new HashMap<>() {{
@@ -105,7 +109,6 @@ public class VkClient {
                     put("v", clientConfig.getVersionAPI());
                 }}
         );
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -117,47 +120,9 @@ public class VkClient {
         return response;
     }
 
-    public ResponseEntity<MessageResponse> sendMessageWithDoc(String message, int peerId, int owner_id, int media_id) {
-        final ResponseEntity<MessageResponse> response;
-
-        StringBuilder attachments = new StringBuilder();
-        attachments.append("doc").append(owner_id)
-                .append("_").append(media_id);
-
-        final String request = getUrlRequest(
-                "messages.send",
-                new HashMap<>() {{
-                    put("message", message);
-                    put("peer_id", peerId);
-                    put("random_id", System.currentTimeMillis());
-                    put("access_token", clientConfig.getToken());
-                    put("v", clientConfig.getVersionAPI());
-                    put("attachment", attachments);
-                }}
-        );
-        logger.info("trying GET request with attachment: " + request);
-        response = template.getForEntity(request, MessageResponse.class);
-        return response;
-    }
-
-    public ResponseEntity<String> sendMessageWithDocAndKeyboard(String message, int peerId, int owner_id,
-                                                                int media_id, Keyboard keyboard) throws JsonProcessingException {
-        StringBuilder attachments = new StringBuilder();
-        attachments.append("doc").append(owner_id)
-                .append("_").append(media_id);
-
-        final String url = getUrlRequest(
-                "messages.send",
-                new HashMap<>() {{
-                    put("message", message);
-                    put("peer_id", peerId);
-                    put("random_id", System.currentTimeMillis());
-                    put("access_token", clientConfig.getToken());
-                    put("v", clientConfig.getVersionAPI());
-                    put("attachment", attachments);
-                }}
-        );
-
+    public ResponseEntity<String> sendMessageWithDocAndKeyboard(String message, int peerId, int ownerId, int mediaId,
+                                                                Keyboard keyboard) throws JsonProcessingException {
+        String url = createUrlRequest(message, peerId, ownerId, mediaId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -167,6 +132,23 @@ public class VkClient {
         logger.info("trying POST request " + url + " with keyboard: " + request);
         ResponseEntity<String> response = template.postForEntity(url, request, String.class);
         return response;
+    }
+
+    private String createUrlRequest(String message,int peerId, int ownerId, int mediaId) {
+        StringBuilder attachments = new StringBuilder();
+        attachments.append("doc").append(ownerId).append("_").append(mediaId);
+
+        return getUrlRequest(
+                "messages.send",
+                new HashMap<>() {{
+                    put("message", message);
+                    put("peer_id", peerId);
+                    put("random_id", System.currentTimeMillis());
+                    put("access_token", clientConfig.getToken());
+                    put("v", clientConfig.getVersionAPI());
+                    put("attachment", attachments);
+                }}
+        );
     }
 
 }

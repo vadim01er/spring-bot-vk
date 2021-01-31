@@ -100,8 +100,8 @@ public class CreateAnswer {
         String textMsg = msg.getVkObject().getMessage().getText();
         int peerId = msg.getVkObject().getMessage().getPeerId();
         User user = usersService.findUserById(peerId);
-        boolean haveUser = user != null;
         String answer;
+        String nameNewsletter = user.isNewsletter()? "Отписаться от рассылки": "Подписаться на рассылку";
 
         if (!isAdmin
                 && !msg.getVkObject().getMessage().getText().equals("Начать")
@@ -111,18 +111,15 @@ public class CreateAnswer {
         }
 
         if (textMsg.equals("Назад")) {
-            if (haveUser) {
-                User userById = usersService.findUserById(peerId);
-                textMsg = mapBack.get(userById.getNow());
-            }
+            User userById = usersService.findUserById(peerId);
+            textMsg = mapBack.get(userById.getNow());
         } else if (textMsg.equals("Начать") || textMsg.equals("начать")
                 || textMsg.equals("Start") || textMsg.equals("start")) {
-
             usersService.insert(new User(peerId, "начать2", true));
             answer = answersService.findAnswer("Начать");
             client.sendMessage(answer, peerId, new Keyboard().addButtons(
                     new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
-                            "Контакты руководителей курса", "Task list"/*, "Совет дня"*/},
+                            "Контакты руководителей курса", "Task list", nameNewsletter/*, "Совет дня"*/},
                     false));
             return;
         }
@@ -132,7 +129,7 @@ public class CreateAnswer {
                 answer = answersService.findAnswer("начать2");
                 client.sendMessage(answer, peerId, new Keyboard().addButtons(
                         new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
-                                "Контакты руководителей курса", "Task list"/*, "Совет дня"*/},
+                                "Контакты руководителей курса", "Task list", nameNewsletter/*, "Совет дня"*/},
                         false));
                 break;
             // Основная информация о курсе ОПД
@@ -211,9 +208,8 @@ public class CreateAnswer {
             // Task list
             case "Task list":
                 answer = answersService.findAnswer("Task list");
-                String nameNewsletter = user.isNewsletter()? "Отписаться от рассылки": "Подписаться на рассылку";
                 client.sendMessageWithDocAndKeyboard(answer, peerId, 147195096, 587606434,
-                        new Keyboard().addButtons(new String[]{nameNewsletter}, true));
+                        new Keyboard().addButtonBack());
                 break;
             case "Подписаться на рассылку":
                 usersService.updateNewsletter(peerId, true);
