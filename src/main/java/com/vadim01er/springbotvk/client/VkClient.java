@@ -68,9 +68,24 @@ public class VkClient {
         } else {
             StringBuilder attachments = new StringBuilder();
             for (Message.Attachment attachment : vkResponse.getVkObject().getMessage().getAttachments()) {
-                attachments.append(attachment.getType()).append(attachment.getPhoto().getOwnerId())
-                        .append("_").append(attachment.getPhoto().getId()).append("_")
-                        .append(attachment.getPhoto().getAccessKey()).append(",");
+                attachments.append(attachment.getType());
+                switch (attachment.getType()) {
+                    case "photo":
+                        attachments.append(attachment.getPhoto().getOwnerId())
+                                .append("_").append(attachment.getPhoto().getId()).append("_")
+                                .append(attachment.getPhoto().getAccessKey()).append(",");
+                        break;
+                    case "video":
+                        attachments.append(attachment.getVideo().getOwnerId())
+                                .append("_").append(attachment.getVideo().getId()).append("_")
+                                .append(attachment.getVideo().getAccessKey()).append(",");
+                        break;
+                    case "doc":
+                        attachments.append(attachment.getDoc().getOwnerId())
+                                .append("_").append(attachment.getDoc().getId()).append("_")
+                                .append(attachment.getDoc().getAccessKey()).append(",");
+                        break;
+                }
             }
             attachments.deleteCharAt(attachments.length() - 1);
             final String request = getUrlRequest(

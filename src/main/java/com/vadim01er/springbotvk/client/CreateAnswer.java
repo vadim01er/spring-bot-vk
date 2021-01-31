@@ -208,8 +208,7 @@ public class CreateAnswer {
             // Task list
             case "Task list":
                 answer = answersService.findAnswer("Task list");
-                client.sendMessageWithDocAndKeyboard(answer, peerId, 147195096, 587606434,
-                        new Keyboard().addButtonBack());
+                client.sendMessageWithDoc(answer, peerId, 147195096, 587606434);
                 break;
             case "Подписаться на рассылку":
                 usersService.updateNewsletter(peerId, true);

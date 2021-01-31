@@ -26,9 +26,41 @@ public class Message {
     public static class Attachment {
         private String type;
         private Photo photo;
+        private Video video;
+        private Doc doc;
 
         @Data
         public class Photo {
+            @JsonProperty("album_id")
+            private int albumId;
+            private long date;
+            private int id;
+            @JsonProperty("owner_id")
+            private int ownerId;
+            @JsonProperty("has_tags")
+            private boolean hasTags;
+            @JsonProperty("access_key")
+            private String accessKey;
+            private List<Object> sizes;
+        }
+
+        @Data
+        public class Video {
+            @JsonProperty("album_id")
+            private int albumId;
+            private long date;
+            private int id;
+            @JsonProperty("owner_id")
+            private int ownerId;
+            @JsonProperty("has_tags")
+            private boolean hasTags;
+            @JsonProperty("access_key")
+            private String accessKey;
+            private List<Object> sizes;
+        }
+
+        @Data
+        public class Doc {
             @JsonProperty("album_id")
             private int albumId;
             private long date;
