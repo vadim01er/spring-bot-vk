@@ -85,6 +85,10 @@ public class VkClient {
                                 .append("_").append(attachment.getDoc().getId()).append("_")
                                 .append(attachment.getDoc().getAccessKey()).append(",");
                         break;
+                    case "wall":
+                        attachments.append(attachment.getWall().getId())
+                                .append("_").append(attachment.getWall().getToId()).append("_")
+                                .append(attachment.getWall().getAccessKey()).append(",");
                 }
             }
             attachments.deleteCharAt(attachments.length() - 1);

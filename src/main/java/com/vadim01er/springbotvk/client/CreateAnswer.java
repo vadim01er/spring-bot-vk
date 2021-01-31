@@ -101,7 +101,10 @@ public class CreateAnswer {
         int peerId = msg.getVkObject().getMessage().getPeerId();
         User user = usersService.findUserById(peerId);
         String answer;
-        String nameNewsletter = user.isNewsletter()? "Отписаться от рассылки": "Подписаться на рассылку";
+        String nameNewsletter = "Error";
+        if (user != null) {
+            nameNewsletter = user.isNewsletter()? "Отписаться от рассылки": "Подписаться на рассылку";
+        }
 
         if (!isAdmin
                 && !msg.getVkObject().getMessage().getText().equals("Начать")

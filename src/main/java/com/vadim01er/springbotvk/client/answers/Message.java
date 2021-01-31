@@ -28,6 +28,7 @@ public class Message {
         private Photo photo;
         private Video video;
         private Doc doc;
+        private Wall wall;
 
         @Data
         public class Photo {
@@ -72,6 +73,15 @@ public class Message {
             @JsonProperty("access_key")
             private String accessKey;
             private List<Object> sizes;
+        }
+
+        @Data
+        public class Wall {
+            private int id;
+            @JsonProperty("to_id")
+            private int toId;
+            @JsonProperty("access_key")
+            private String accessKey;
         }
     }
 
