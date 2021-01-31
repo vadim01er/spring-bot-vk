@@ -214,14 +214,18 @@ public class CreateAnswer {
             case "Подписаться на рассылку":
                 usersService.updateNewsletter(peerId, true);
                 answer = "Вы подписались на рассылку";
-                client.sendMessage(answer, peerId,
-                        new Keyboard().addButtons(new String[]{"Отписаться от рассылки"}, true));
+                client.sendMessage(answer, peerId, new Keyboard().addButtons(
+                        new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
+                                "Контакты руководителей курса", "Task list", "Отписаться от рассылки"/*, "Совет дня"*/},
+                        false));
                 break;
             case "Отписаться от рассылки":
                 usersService.updateNewsletter(peerId, false);
                 answer = "Вы отписались от рассылки";
-                client.sendMessage(answer, peerId,
-                        new Keyboard().addButtons(new String[]{"Подписаться на рассылку"}, true));
+                client.sendMessage(answer, peerId, new Keyboard().addButtons(
+                        new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
+                                "Контакты руководителей курса", "Task list", "Подписаться на рассылку"/*, "Совет дня"*/},
+                        false));
                 break;
             // END Task list
             default:
