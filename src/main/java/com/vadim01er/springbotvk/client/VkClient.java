@@ -86,8 +86,8 @@ public class VkClient {
                                 .append(attachment.getDoc().getAccessKey()).append(",");
                         break;
                     case "wall":
-                        attachments.append(attachment.getWall().getId())
-                                .append("_").append(attachment.getWall().getToId()).append("_")
+                        attachments.append(attachment.getWall().getToId())
+                                .append("_").append(attachment.getWall().getId()).append("_")
                                 .append(attachment.getWall().getAccessKey()).append(",");
                 }
             }
