@@ -76,7 +76,7 @@ public class VkClient {
                     case "photo":
                         attachmentsStr.append(attachment.getPhoto().getOwnerId()).append("_")
                                 .append(attachment.getPhoto().getId());
-                        if (!attachment.getPhoto().getAccessKey().isBlank()) {
+                        if (!attachment.getPhoto().getAccessKey().isEmpty()) {
                             attachmentsStr.append("_").append(attachment.getPhoto().getAccessKey());
                         }
                         attachmentsStr.append(",");
@@ -84,7 +84,7 @@ public class VkClient {
                     case "video":
                         attachmentsStr.append(attachment.getVideo().getOwnerId()).append("_")
                                 .append(attachment.getVideo().getId());
-                        if (!attachment.getPhoto().getAccessKey().isBlank()) {
+                        if (!attachment.getVideo().getAccessKey().isEmpty()) {
                             attachmentsStr.append("_").append(attachment.getVideo().getAccessKey());
                         }
                         attachmentsStr.append(",");
@@ -92,7 +92,7 @@ public class VkClient {
                     case "doc":
                         attachmentsStr.append(attachment.getDoc().getOwnerId()).append("_")
                                 .append(attachment.getDoc().getId());
-                        if (!attachment.getPhoto().getAccessKey().isBlank()) {
+                        if (!attachment.getDoc().getAccessKey().isEmpty()) {
                             attachmentsStr.append("_").append(attachment.getDoc().getAccessKey());
                         }
                         attachmentsStr.append(",");
@@ -100,7 +100,7 @@ public class VkClient {
                     case "wall":
                         attachmentsStr.append(attachment.getWall().getToId()).append("_")
                                 .append(attachment.getWall().getId());
-                        if (!attachment.getPhoto().getAccessKey().isBlank()) {
+                        if (!attachment.getWall().getAccessKey().isEmpty()) {
                             attachmentsStr.append("_").append(attachment.getWall().getAccessKey());
                         }
                         attachmentsStr.append(",");
