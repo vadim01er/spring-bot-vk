@@ -11,4 +11,5 @@ public class RestTemplateFactory {
     public RestTemplate createTemplate() {
         return new RestTemplateBuilder().build();
     }
+
 }

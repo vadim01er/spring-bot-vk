@@ -1,6 +1,5 @@
 package com.vadim01er.springbotvk.client;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.vadim01er.springbotvk.client.answers.Message;
 import com.vadim01er.springbotvk.client.answers.VkResponse;
 import com.vadim01er.springbotvk.entities.Admin;
@@ -12,6 +11,7 @@ import com.vadim01er.springbotvk.service.NewslettersService;
 import com.vadim01er.springbotvk.service.UsersService;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +52,7 @@ public class CreateAnswer {
         this.newslettersService = newslettersService;
     }
 
-    public void replayAdmin(VkResponse msg) throws JsonProcessingException {
+    public void replayAdmin(VkResponse msg) {
         String[] split = msg.getVkObject().getMessage().getText().split(" ");
         if (split[0].startsWith("/")) {
             switch (split[0]) {
@@ -80,7 +80,7 @@ public class CreateAnswer {
                             client.sendMessage(
                                     msg.getVkObject().getMessage().getText().substring(11),
                                     user.getUserId(),
-                                    msg
+                                    msg.getVkObject().getMessage().getAttachments()
                             );
                         }
                         client.sendMessage("Newsletter send", msg.getVkObject().getMessage().getPeerId());
@@ -92,11 +92,11 @@ public class CreateAnswer {
         }
     }
 
-    public void replay(VkResponse msg) throws JsonProcessingException {
+    public void replay(VkResponse msg) {
         replay(msg, false);
     }
 
-    private void replay(VkResponse msg, boolean isAdmin) throws JsonProcessingException {
+    private void replay(VkResponse msg, boolean isAdmin) {
         String textMsg = msg.getVkObject().getMessage().getText();
         int peerId = msg.getVkObject().getMessage().getPeerId();
         User user = usersService.findUserById(peerId);
@@ -188,7 +188,9 @@ public class CreateAnswer {
             //Методическое пособие для студентов
             case "Методическое пособие для студентов":
                 answer = answersService.findAnswer("Методическое пособие для студентов");
-                client.sendMessageWithDoc(answer, peerId,147195096,587609010);
+                Message.Attachment.Builder builder = new Message.Attachment.Builder();
+                builder.addType("doc").addDoc(147195096,587609010);
+                client.sendMessage(answer, peerId,new ArrayList<>(){{add(builder.createAttachment());}});
                 break;
             // END Методическое пособие для студентов
 
@@ -211,7 +213,9 @@ public class CreateAnswer {
             // Task list
             case "Task list":
                 answer = answersService.findAnswer("Task list");
-                client.sendMessageWithDoc(answer, peerId, 147195096, 587606434);
+                builder = new Message.Attachment.Builder();
+                builder.addType("doc").addDoc(147195096,587606434);
+                client.sendMessage(answer, peerId, new ArrayList<>(){{add(builder.createAttachment());}});
                 break;
             case "Подписаться на рассылку":
                 usersService.updateNewsletter(peerId, true);

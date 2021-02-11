@@ -16,7 +16,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -61,37 +63,49 @@ public class VkClient {
         return response;
     }
 
-    public ResponseEntity<MessageResponse> sendMessage(String message, int peerId, VkResponse vkResponse) {
+    public ResponseEntity<MessageResponse> sendMessage(String message, int peerId, List<Message.Attachment> attachments) {
         final ResponseEntity<MessageResponse> response;
-        if (vkResponse.getVkObject().getMessage().getAttachments().isEmpty()) {
+        if (attachments.isEmpty()) {
             response = sendMessage(message, peerId);
         } else {
-            StringBuilder attachments = new StringBuilder();
-            for (Message.Attachment attachment : vkResponse.getVkObject().getMessage().getAttachments()) {
-                attachments.append(attachment.getType());
+            StringBuilder attachmentsStr = new StringBuilder();
+            for (Message.Attachment attachment : attachments) {
+                attachmentsStr.append(attachment.getType());
                 switch (attachment.getType()) {
                     case "photo":
-                        attachments.append(attachment.getPhoto().getOwnerId())
-                                .append("_").append(attachment.getPhoto().getId()).append("_")
-                                .append(attachment.getPhoto().getAccessKey()).append(",");
+                        attachmentsStr.append(attachment.getPhoto().getOwnerId()).append("_")
+                                .append(attachment.getPhoto().getId());
+                        if (!attachment.getPhoto().getAccessKey().isBlank()) {
+                            attachmentsStr.append("_").append(attachment.getPhoto().getAccessKey());
+                        }
+                        attachmentsStr.append(",");
                         break;
                     case "video":
-                        attachments.append(attachment.getVideo().getOwnerId())
-                                .append("_").append(attachment.getVideo().getId()).append("_")
-                                .append(attachment.getVideo().getAccessKey()).append(",");
+                        attachmentsStr.append(attachment.getVideo().getOwnerId()).append("_")
+                                .append(attachment.getVideo().getId());
+                        if (!attachment.getPhoto().getAccessKey().isBlank()) {
+                            attachmentsStr.append("_").append(attachment.getVideo().getAccessKey());
+                        }
+                        attachmentsStr.append(",");
                         break;
                     case "doc":
-                        attachments.append(attachment.getDoc().getOwnerId())
-                                .append("_").append(attachment.getDoc().getId()).append("_")
-                                .append(attachment.getDoc().getAccessKey()).append(",");
+                        attachmentsStr.append(attachment.getDoc().getOwnerId()).append("_")
+                                .append(attachment.getDoc().getId());
+                        if (!attachment.getPhoto().getAccessKey().isBlank()) {
+                            attachmentsStr.append("_").append(attachment.getDoc().getAccessKey());
+                        }
+                        attachmentsStr.append(",");
                         break;
                     case "wall":
-                        attachments.append(attachment.getWall().getToId())
-                                .append("_").append(attachment.getWall().getId()).append("_")
-                                .append(attachment.getWall().getAccessKey()).append(",");
+                        attachmentsStr.append(attachment.getWall().getToId()).append("_")
+                                .append(attachment.getWall().getId());
+                        if (!attachment.getPhoto().getAccessKey().isBlank()) {
+                            attachmentsStr.append("_").append(attachment.getWall().getAccessKey());
+                        }
+                        attachmentsStr.append(",");
                 }
             }
-            attachments.deleteCharAt(attachments.length() - 1);
+            attachmentsStr.deleteCharAt(attachmentsStr.length() - 1);
             final String request = getUrlRequest(
                     "messages.send",
                     new HashMap<>() {{
@@ -100,7 +114,7 @@ public class VkClient {
                         put("random_id", System.currentTimeMillis());
                         put("access_token", clientConfig.getToken());
                         put("v", clientConfig.getVersionAPI());
-                        put("attachment", attachments);
+                        put("attachment", attachmentsStr);
                     }}
             );
             logger.info("trying GET request with attachment: " + request);
@@ -109,15 +123,7 @@ public class VkClient {
         return response;
     }
 
-    public ResponseEntity<MessageResponse> sendMessageWithDoc(String message, int peerId, int ownerId, int mediaId) {
-        String url = createUrlRequest(message, peerId, ownerId, mediaId);
-        logger.info("trying GET request with attachment: " + url);
-        final ResponseEntity<MessageResponse> response = template.getForEntity(url, MessageResponse.class);
-        return response;
-    }
-
-    public ResponseEntity<String> sendMessage(String message, int peerId, Keyboard keyboard)
-            throws JsonProcessingException {
+    public ResponseEntity<String> sendMessage(String message, int peerId, Keyboard keyboard) {
         final String url = getUrlRequest(
                 "messages.send",
                 new HashMap<>() {{
@@ -132,42 +138,55 @@ public class VkClient {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
-        map.add("keyboard", objectMapper.writeValueAsString(keyboard));
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-        logger.info("trying POST request " + url + " with keyboard: " + request);
-        ResponseEntity<String> response = template.postForEntity(url, request, String.class);
+        ResponseEntity<String> response = null;
+        try {
+            map.add("keyboard", objectMapper.writeValueAsString(keyboard));
+            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+            logger.info("trying POST request " + url + " with keyboard: " + request);
+            response = template.postForEntity(url, request, String.class);
+        } catch (JsonProcessingException e) {
+            logger.error("some problem with creating JSON Keyboard");
+        }
+
         return response;
     }
 
-    public ResponseEntity<String> sendMessageWithDocAndKeyboard(String message, int peerId, int ownerId, int mediaId,
-                                                                Keyboard keyboard) throws JsonProcessingException {
-        String url = createUrlRequest(message, peerId, ownerId, mediaId);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        ObjectMapper objectMapper = new ObjectMapper();
-        map.add("keyboard", objectMapper.writeValueAsString(keyboard));
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-        logger.info("trying POST request " + url + " with keyboard: " + request);
-        ResponseEntity<String> response = template.postForEntity(url, request, String.class);
-        return response;
-    }
+//    public ResponseEntity<MessageResponse> sendMessageWithDoc(String message, int peerId, int ownerId, int mediaId) {
+//        String url = createUrlRequest(message, peerId, ownerId, mediaId);
+//        logger.info("trying GET request with attachment: " + url);
+//        final ResponseEntity<MessageResponse> response = template.getForEntity(url, MessageResponse.class);
+//        return response;
+//    }
 
-    private String createUrlRequest(String message,int peerId, int ownerId, int mediaId) {
-        StringBuilder attachments = new StringBuilder();
-        attachments.append("doc").append(ownerId).append("_").append(mediaId);
+//    public ResponseEntity<String> sendMessageWithDocAndKeyboard(String message, int peerId, int ownerId, int mediaId,
+//                                                                Keyboard keyboard) throws JsonProcessingException {
+//        String url = createUrlRequest(message, peerId, ownerId, mediaId);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        map.add("keyboard", objectMapper.writeValueAsString(keyboard));
+//        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+//        logger.info("trying POST request " + url + " with keyboard: " + request);
+//        ResponseEntity<String> response = template.postForEntity(url, request, String.class);
+//        return response;
+//    }
 
-        return getUrlRequest(
-                "messages.send",
-                new HashMap<>() {{
-                    put("message", message);
-                    put("peer_id", peerId);
-                    put("random_id", System.currentTimeMillis());
-                    put("access_token", clientConfig.getToken());
-                    put("v", clientConfig.getVersionAPI());
-                    put("attachment", attachments);
-                }}
-        );
-    }
+//    private String createUrlRequest(String message, int peerId, int ownerId, int mediaId) {
+//        StringBuilder attachments = new StringBuilder();
+//        attachments.append("doc").append(ownerId).append("_").append(mediaId);
+//
+//        return getUrlRequest(
+//                "messages.send",
+//                new HashMap<>() {{
+//                    put("message", message);
+//                    put("peer_id", peerId);
+//                    put("random_id", System.currentTimeMillis());
+//                    put("access_token", clientConfig.getToken());
+//                    put("v", clientConfig.getVersionAPI());
+//                    put("attachment", attachments);
+//                }}
+//        );
+//    }
 
 }
