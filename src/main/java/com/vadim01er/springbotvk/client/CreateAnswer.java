@@ -168,14 +168,6 @@ public class CreateAnswer {
                 answer = answersService.findAnswer("Тайм-менеджмент2");
                 client.sendMessage(answer, peerId);
                 answer = answersService.findAnswer("Тайм-менеджмент3");
-                client.sendMessage(answer, peerId);
-                answer = answersService.findAnswer("Тайм-менеджмент4");
-                client.sendMessage(answer, peerId);
-                answer = answersService.findAnswer("Тайм-менеджмент5");
-                client.sendMessage(answer, peerId);
-                answer = answersService.findAnswer("Тайм-менеджмент6");
-                client.sendMessage(answer, peerId);
-                answer = answersService.findAnswer("Тайм-менеджмент7");
                 client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
                 break;
             case "Сроки курса":
@@ -197,8 +189,8 @@ public class CreateAnswer {
             case "Контакты руководителей курса":
                 answer = answersService.findAnswer("Контакты руководителей курса");
                 client.sendMessage(answer, peerId, new Keyboard()
-                        .addButtons(new String[]{"Курс на DL"},
-                                new String[]{"https://dl.spbstu.ru/course/view.php?id=2660"}, false)
+                        .addButtons(new String[]{"Курс на учебный портал"},
+                                new String[]{"https://project.spbstu.ru/"}, false)
                         .addButtons(new String[]{"Контактные данные", "Местоположение"}, true));
                 break;
             case "Контактные данные":
