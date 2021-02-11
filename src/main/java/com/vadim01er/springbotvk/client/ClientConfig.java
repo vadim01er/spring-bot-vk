@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix="client")
 @Data
 public class ClientConfig {
-    private String botHook;
     private String requestUrlTemplate;
     private String token;
     private String confirmationToken;
