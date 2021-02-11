@@ -3,7 +3,6 @@ package com.vadim01er.springbotvk.keyboard;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,8 +65,14 @@ public class Keyboard {
         PRIMARY("primary"),
         SECONDARY("secondary");
 
-        Color(String name) {
+        Color(String color) {
+            this.color = color;
+        }
 
+        private final String color;
+
+        public String  getColor() {
+            return color;
         }
     }
 
@@ -100,7 +105,7 @@ public class Keyboard {
         for (String[] name : names) {
             ArrayList<ButtonLink> list = new ArrayList<>();
             for (String s : name) {
-                list.add(new Button(new Action("text", s), Color.POSITIVE.name()));
+                list.add(new Button(new Action("text", s), Color.POSITIVE.getColor()));
             }
             buttons.add(list);
         }
@@ -111,12 +116,16 @@ public class Keyboard {
     }
 
     public Keyboard addButtonNegative(String text, Color color) {
-        buttons.add(new ArrayList<>() {{add(new Button(new Action("text", text), color.name()));}});
+        buttons.add(new ArrayList<>() {{add(new Button(new Action("text", text), color.getColor()));}});
         return this;
     }
 
     public Keyboard addButtonBack() {
-        buttons.add(new ArrayList<>() {{add(new Button(new Action("text", "Назад"), Color.NEGATIVE.name()));}});
+        buttons.add(
+                new ArrayList<>() {{
+                    add(new Button(new Action("text", "Назад"), Color.NEGATIVE.getColor()));
+                }}
+                );
         return this;
     }
 
