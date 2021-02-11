@@ -189,7 +189,7 @@ public class CreateAnswer {
             case "Контакты руководителей курса":
                 answer = answersService.findAnswer("Контакты руководителей курса");
                 client.sendMessage(answer, peerId, new Keyboard()
-                        .addButtons(new String[]{"Курс на учебный портал"},
+                        .addButtons(new String[]{"Ссылка на учебный портал"},
                                 new String[]{"https://project.spbstu.ru/"}, false)
                         .addButtons(new String[]{"Контактные данные", "Местоположение"}, true));
                 break;
@@ -214,16 +214,16 @@ public class CreateAnswer {
                 answer = "Вы подписались на рассылку";
                 client.sendMessage(answer, peerId, new Keyboard().addButtons(
                         new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
-                                "Контакты руководителей курса", "Task list", "Отписаться от рассылки"/*, "Совет дня"*/},
-                        false));
+                                "Контакты руководителей курса", "Task list"/*, "Совет дня"*/},
+                        false).addButtonNegative("Отписаться от рассылки", Keyboard.Color.NEGATIVE));
                 break;
             case "Отписаться от рассылки":
                 usersService.updateNewsletter(peerId, false);
                 answer = "Вы отписались от рассылки";
                 client.sendMessage(answer, peerId, new Keyboard().addButtons(
                         new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
-                                "Контакты руководителей курса", "Task list", "Подписаться на рассылку"/*, "Совет дня"*/},
-                        false));
+                                "Контакты руководителей курса", "Task list"/*, "Совет дня"*/},
+                        false).addButtonNegative("Подписаться на рассылку", Keyboard.Color.SECONDARY));
                 break;
             // END Task list
             default:
