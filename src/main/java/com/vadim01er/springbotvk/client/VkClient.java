@@ -3,7 +3,6 @@ package com.vadim01er.springbotvk.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vadim01er.springbotvk.client.answers.Message;
-import com.vadim01er.springbotvk.client.answers.VkResponse;
 import com.vadim01er.springbotvk.keyboard.Keyboard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

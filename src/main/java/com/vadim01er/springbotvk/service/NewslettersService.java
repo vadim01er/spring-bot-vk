@@ -2,7 +2,6 @@ package com.vadim01er.springbotvk.service;
 
 import com.vadim01er.springbotvk.entities.Newsletter;
 import com.vadim01er.springbotvk.entities.NewslettersRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;

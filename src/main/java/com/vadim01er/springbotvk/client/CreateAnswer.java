@@ -102,8 +102,10 @@ public class CreateAnswer {
         User user = usersService.findUserById(peerId);
         String answer;
         String nameNewsletter = "Error";
+        Keyboard.Color color = Keyboard.Color.POSITIVE;
         if (user != null) {
             nameNewsletter = user.isNewsletter()? "Отписаться от рассылки": "Подписаться на рассылку";
+            color = user.isNewsletter()? Keyboard.Color.NEGATIVE: Keyboard.Color.POSITIVE;
         }
 
         if (!isAdmin
@@ -122,8 +124,8 @@ public class CreateAnswer {
             answer = answersService.findAnswer("Начать");
             client.sendMessage(answer, peerId, new Keyboard().addButtons(
                     new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
-                            "Контакты руководителей курса", "Task list", nameNewsletter/*, "Совет дня"*/},
-                    false));
+                            "Контакты руководителей курса", "Task list"/*, "Совет дня"*/},
+                    false).addButtonNegative(nameNewsletter, color));
             return;
         }
 
@@ -132,8 +134,8 @@ public class CreateAnswer {
                 answer = answersService.findAnswer("начать2");
                 client.sendMessage(answer, peerId, new Keyboard().addButtons(
                         new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
-                                "Контакты руководителей курса", "Task list", nameNewsletter/*, "Совет дня"*/},
-                        false));
+                                "Контакты руководителей курса", "Task list"/*, "Совет дня"*/},
+                        false).addButtonNegative(nameNewsletter, color));
                 break;
             // Основная информация о курсе ОПД
             case "Основная информация о курсе ОПД":

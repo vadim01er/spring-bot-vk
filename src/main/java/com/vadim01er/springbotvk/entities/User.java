@@ -1,6 +1,5 @@
 package com.vadim01er.springbotvk.entities;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
