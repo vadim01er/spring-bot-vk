@@ -28,6 +28,10 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.4.1'
 	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
+	// Google Sheets Api
+	compile 'com.google.api-client:google-api-client:1.30.4'
+	compile 'com.google.oauth-client:google-oauth-client-jetty:1.30.6'
+	compile 'com.google.apis:google-api-services-sheets:v4-rev581-1.25.0'
 }
 
 //test {

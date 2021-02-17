@@ -33,8 +33,6 @@ public class NewslettersService {
     }
 
     public List<Newsletter> findAll(){
-        ArrayList<Newsletter> newsletters = new ArrayList<>();
-        newslettersRepository.findAll().forEach(newsletters::add);
-        return newsletters;
+        return new ArrayList<>(newslettersRepository.findAll());
     }
 }
