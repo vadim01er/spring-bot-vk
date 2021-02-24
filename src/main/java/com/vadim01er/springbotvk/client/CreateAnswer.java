@@ -88,15 +88,11 @@ public class CreateAnswer {
                     break;
             }
         } else {
-            replay(msg, true);
+            replay(msg);
         }
     }
 
-    public void replay(VkResponse msg) {
-        replay(msg, false);
-    }
-
-    private void replay(VkResponse msg, boolean isAdmin) {
+    private void replay(VkResponse msg) {
         String textMsg = msg.getVkObject().getMessage().getText();
         int peerId = msg.getVkObject().getMessage().getPeerId();
         User user = usersService.findUserById(peerId);
@@ -105,14 +101,7 @@ public class CreateAnswer {
         Keyboard.Color color = Keyboard.Color.NEGATIVE;
         if (user != null) {
             nameNewsletter = user.isNewsletter()? "Отписаться от рассылки": "Подписаться на рассылку";
-            color = user.isNewsletter()? Keyboard.Color.NEGATIVE: Keyboard.Color.PRIMARY;
-        }
-
-        if (!isAdmin
-                && !msg.getVkObject().getMessage().getText().equals("Начать")
-                && msg.getVkObject().getMessage().getPayload() == null) {
-            client.sendMessage("Пожалуйста, используйте кнопки", peerId);
-            return;
+            color = user.isNewsletter()? Keyboard.Color.NEGATIVE: Keyboard.Color.SECONDARY;
         }
 
         if (textMsg.equals("Назад")) {
