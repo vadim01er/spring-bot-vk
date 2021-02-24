@@ -101,11 +101,11 @@ public class CreateAnswer {
         int peerId = msg.getVkObject().getMessage().getPeerId();
         User user = usersService.findUserById(peerId);
         String answer;
-        String nameNewsletter = "Error";
-        Keyboard.Color color = Keyboard.Color.POSITIVE;
+        String nameNewsletter = "Отписаться от рассылки";
+        Keyboard.Color color = Keyboard.Color.NEGATIVE;
         if (user != null) {
             nameNewsletter = user.isNewsletter()? "Отписаться от рассылки": "Подписаться на рассылку";
-            color = user.isNewsletter()? Keyboard.Color.NEGATIVE: Keyboard.Color.POSITIVE;
+            color = user.isNewsletter()? Keyboard.Color.NEGATIVE: Keyboard.Color.PRIMARY;
         }
 
         if (!isAdmin
