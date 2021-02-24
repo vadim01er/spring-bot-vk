@@ -92,7 +92,7 @@ public class CreateAnswer {
         }
     }
 
-    private void replay(VkResponse msg) {
+    public void replay(VkResponse msg) {
         String textMsg = msg.getVkObject().getMessage().getText();
         int peerId = msg.getVkObject().getMessage().getPeerId();
         User user = usersService.findUserById(peerId);
