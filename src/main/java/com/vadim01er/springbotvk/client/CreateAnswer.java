@@ -217,9 +217,6 @@ public class CreateAnswer {
                         false).addButtonNegative("Подписаться на рассылку", Keyboard.Color.SECONDARY));
                 break;
             // END Task list
-            default:
-                client.sendMessage("Возможно какие то неполадки", peerId);
-                return;
         }
         usersService.updateNowTxt(peerId, textMsg);
     }
