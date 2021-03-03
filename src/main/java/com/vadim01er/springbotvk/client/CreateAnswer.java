@@ -52,6 +52,27 @@ public class CreateAnswer {
         this.newslettersService = newslettersService;
     }
 
+    private class Newsletter implements Runnable {
+
+        private final VkResponse msg;
+
+        public Newsletter(VkResponse msg) {
+            this.msg = msg;
+        }
+
+        @Override
+        public void run() {
+            List<User> allUsersWithNewsletter = usersService.findAllUsersWithNewsletter();
+            for (User user : allUsersWithNewsletter) {
+                client.sendMessage(
+                        msg.getVkObject().getMessage().getText().substring(11),
+                        user.getUserId(),
+                        msg.getVkObject().getMessage().getAttachments()
+                );
+            }
+        }
+    }
+
     public void replayAdmin(VkResponse msg) {
         String[] split = msg.getVkObject().getMessage().getText().split(" ");
         if (split[0].startsWith("/")) {
@@ -75,14 +96,8 @@ public class CreateAnswer {
                             client.sendMessage("Newsletter added", msg.getVkObject().getMessage().getPeerId());
                         }
                     } else {
-                        List<User> allUsersWithNewsletter = usersService.findAllUsersWithNewsletter();
-                        for (User user : allUsersWithNewsletter) {
-                            client.sendMessage(
-                                    msg.getVkObject().getMessage().getText().substring(11),
-                                    user.getUserId(),
-                                    msg.getVkObject().getMessage().getAttachments()
-                            );
-                        }
+                        Runnable r = new Newsletter(msg);
+                        new Thread(r).start();
                         client.sendMessage("Newsletter send", msg.getVkObject().getMessage().getPeerId());
                     }
                     break;
