@@ -164,7 +164,7 @@ public class CreateAnswer {
                 client.sendMessage(answer, peerId);
                 answer = answersService.findAnswer("Командообразование + тест3");
                 Message.Attachment.Builder builder = new Message.Attachment.Builder();
-                builder.addType("photo").addPhoto(-162870639, 590701124);
+                builder.addType("photo").addPhoto(-162870639, 457241786);
                 client.sendMessageWithDocAndKeyboard(answer, peerId,
                         new ArrayList<>(1){{add(builder.createAttachment());}},
                         new Keyboard().addButtonBack());
@@ -176,7 +176,7 @@ public class CreateAnswer {
                 client.sendMessage(answer, peerId);
                 answer = answersService.findAnswer("Тайм-менеджмент3");
                 builder = new Message.Attachment.Builder();
-                builder.addType("photo").addPhoto(-162870639, 590701146);
+                builder.addType("photo").addPhoto(-162870639, 457241787);
                 client.sendMessageWithDocAndKeyboard(answer, peerId,
                         new ArrayList<>(1){{add(builder.createAttachment());}},
                         new Keyboard().addButtonBack());
