@@ -164,7 +164,7 @@ public class CreateAnswer {
                 client.sendMessage(answer, peerId);
                 answer = answersService.findAnswer("Командообразование + тест3");
                 Message.Attachment.Builder builder = new Message.Attachment.Builder();
-                builder.addType("photo").addPhoto(162870639, 590701124);
+                builder.addType("photo").addPhoto(-162870639, 590701124);
                 client.sendMessageWithDocAndKeyboard(answer, peerId,
                         new ArrayList<>(1){{add(builder.createAttachment());}},
                         new Keyboard().addButtonBack());
@@ -176,7 +176,7 @@ public class CreateAnswer {
                 client.sendMessage(answer, peerId);
                 answer = answersService.findAnswer("Тайм-менеджмент3");
                 builder = new Message.Attachment.Builder();
-                builder.addType("photo").addPhoto(162870639, 590701146);
+                builder.addType("photo").addPhoto(-162870639, 590701146);
                 client.sendMessageWithDocAndKeyboard(answer, peerId,
                         new ArrayList<>(1){{add(builder.createAttachment());}},
                         new Keyboard().addButtonBack());
@@ -192,7 +192,7 @@ public class CreateAnswer {
             case "Методическое пособие для студентов":
                 answer = answersService.findAnswer("Методическое пособие для студентов");
                 builder = new Message.Attachment.Builder();
-                builder.addType("doc").addDoc(162870639, 590703138);
+                builder.addType("doc").addDoc(-162870639, 590703138);
                 client.sendMessage(answer, peerId, new ArrayList<>(1){{add(builder.createAttachment());}});
                 break;
             // END Методическое пособие для студентов
@@ -217,7 +217,7 @@ public class CreateAnswer {
             case "Task list":
                 answer = answersService.findAnswer("Task list");
                 builder = new Message.Attachment.Builder();
-                builder.addType("doc").addDoc(162870639, 590701252);
+                builder.addType("doc").addDoc(-162870639, 590701252);
                 client.sendMessage(answer, peerId,  new ArrayList<>(1){{add(builder.createAttachment());}});
                 break;
             case "Подписаться на рассылку":
