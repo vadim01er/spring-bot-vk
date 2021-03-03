@@ -11,10 +11,7 @@ import com.vadim01er.springbotvk.service.NewslettersService;
 import com.vadim01er.springbotvk.service.UsersService;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class CreateAnswer {
@@ -128,7 +125,7 @@ public class CreateAnswer {
             answer = answersService.findAnswer("Начать");
             client.sendMessage(answer, peerId, new Keyboard().addButtons(
                     new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
-                            "Контакты руководителей курса", "Task list"/*, "Совет дня"*/},
+                            "Контакты руководителей курса", "Task list"},
                     false).addButtonNegative(nameNewsletter, color));
             return;
         }
@@ -138,7 +135,7 @@ public class CreateAnswer {
                 answer = answersService.findAnswer("начать2");
                 client.sendMessage(answer, peerId, new Keyboard().addButtons(
                         new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
-                                "Контакты руководителей курса", "Task list"/*, "Совет дня"*/},
+                                "Контакты руководителей курса", "Task list"},
                         false).addButtonNegative(nameNewsletter, color));
                 break;
             // Основная информация о курсе ОПД
@@ -166,7 +163,10 @@ public class CreateAnswer {
                 answer = answersService.findAnswer("Командообразование + тест2");
                 client.sendMessage(answer, peerId);
                 answer = answersService.findAnswer("Командообразование + тест3");
-                client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
+                Message.Attachment.Builder builder = new Message.Attachment.Builder();
+                builder.addType("photo").addDoc(162870639, 590701124);
+                client.sendMessageWithDocAndKeyboard(answer, peerId,
+                        Collections.singletonList(builder.createAttachment()), new Keyboard().addButtonBack());
                 break;
             case "Тайм-менеджмент":
                 answer = answersService.findAnswer("Тайм-менеджмент");
@@ -174,7 +174,10 @@ public class CreateAnswer {
                 answer = answersService.findAnswer("Тайм-менеджмент2");
                 client.sendMessage(answer, peerId);
                 answer = answersService.findAnswer("Тайм-менеджмент3");
-                client.sendMessage(answer, peerId, new Keyboard().addButtonBack());
+                builder = new Message.Attachment.Builder();
+                builder.addType("photo").addDoc(162870639, 590701146);
+                client.sendMessageWithDocAndKeyboard(answer, peerId,
+                        Collections.singletonList(builder.createAttachment()), new Keyboard().addButtonBack());
                 break;
             case "Сроки курса":
                 answer = answersService.findAnswer("Сроки курса");
@@ -186,9 +189,9 @@ public class CreateAnswer {
             //Методическое пособие для студентов
             case "Методическое пособие для студентов":
                 answer = answersService.findAnswer("Методическое пособие для студентов");
-                Message.Attachment.Builder builder = new Message.Attachment.Builder();
-                builder.addType("doc").addDoc(147195096,587609010);
-                client.sendMessage(answer, peerId,new ArrayList<>(){{add(builder.createAttachment());}});
+                builder = new Message.Attachment.Builder();
+                builder.addType("doc").addDoc(162870639, 590703138);
+                client.sendMessage(answer, peerId, Collections.singletonList(builder.createAttachment()));
                 break;
             // END Методическое пособие для студентов
 
@@ -212,15 +215,15 @@ public class CreateAnswer {
             case "Task list":
                 answer = answersService.findAnswer("Task list");
                 builder = new Message.Attachment.Builder();
-                builder.addType("doc").addDoc(147195096,587606434);
-                client.sendMessage(answer, peerId, new ArrayList<>(){{add(builder.createAttachment());}});
+                builder.addType("doc").addDoc(162870639, 590701252);
+                client.sendMessage(answer, peerId, Collections.singletonList(builder.createAttachment()));
                 break;
             case "Подписаться на рассылку":
                 usersService.updateNewsletter(peerId, true);
                 answer = "Вы подписались на рассылку";
                 client.sendMessage(answer, peerId, new Keyboard().addButtons(
                         new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
-                                "Контакты руководителей курса", "Task list"/*, "Совет дня"*/},
+                                "Контакты руководителей курса", "Task list"},
                         false).addButtonNegative("Отписаться от рассылки", Keyboard.Color.NEGATIVE));
                 break;
             case "Отписаться от рассылки":
@@ -228,7 +231,7 @@ public class CreateAnswer {
                 answer = "Вы отписались от рассылки";
                 client.sendMessage(answer, peerId, new Keyboard().addButtons(
                         new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
-                                "Контакты руководителей курса", "Task list"/*, "Совет дня"*/},
+                                "Контакты руководителей курса", "Task list"},
                         false).addButtonNegative("Подписаться на рассылку", Keyboard.Color.SECONDARY));
                 break;
             // END Task list
