@@ -54,6 +54,10 @@ public class Message {
                 this.attachment.setPhoto(photo);
                 return this;
             }
+            public Builder addPhoto(int ownerId, int mediaId) {
+                this.attachment.setPhoto(new Photo(ownerId, mediaId));
+                return this;
+            }
             public Builder addVideo(Video video) {
                 this.attachment.setVideo(video);
                 return this;
@@ -72,7 +76,7 @@ public class Message {
         }
 
         @Data
-        public class Photo {
+        public static class Photo {
             @JsonProperty("album_id")
             private int albumId;
             private long date;
@@ -84,6 +88,11 @@ public class Message {
             @JsonProperty("access_key")
             private String accessKey;
             private List<Object> sizes;
+
+            public Photo(int ownerId, int mediaId) {
+                this.ownerId = ownerId;
+                this.id = mediaId;
+            }
         }
 
         @Data
