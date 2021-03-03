@@ -160,7 +160,9 @@ public class VkClient {
                     attachmentsStr.append(",");
             }
         }
-        attachmentsStr.deleteCharAt(attachmentsStr.length() - 1);
+        if (!attachments.isEmpty()) {
+            attachmentsStr.deleteCharAt(attachmentsStr.length() - 1);
+        }
         return getUrlRequest(
                 "messages.send",
                 new HashMap<>() {{
