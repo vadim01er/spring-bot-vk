@@ -98,6 +98,8 @@ public class CreateAnswer {
                         client.sendMessage("Newsletter send", msg.getVkObject().getMessage().getPeerId());
                     }
                     break;
+                default:
+                    break;
             }
         } else {
             replay(msg);
@@ -235,6 +237,8 @@ public class CreateAnswer {
                         new String[]{"Основная информация о курсе ОПД", "Методическое пособие для студентов",
                                 "Контакты руководителей курса", "Task list"},
                         false).addButtonNegative("Подписаться на рассылку", Keyboard.Color.SECONDARY));
+                break;
+            default:
                 break;
             // END Task list
         }

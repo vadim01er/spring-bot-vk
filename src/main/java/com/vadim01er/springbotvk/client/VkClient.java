@@ -37,7 +37,6 @@ public class VkClient {
         String properties = props.entrySet().stream()
                 .map(Object::toString)
                 .collect(Collectors.joining("&"));
-        System.out.println(clientConfig.getRequestUrlTemplate());
         String requestURL =
                 String.format(clientConfig.getRequestUrlTemplate(), methodName);
         if (!props.isEmpty()) {
